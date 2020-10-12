@@ -5,15 +5,12 @@
 # ** DESCRIPTION: 
 # ** - THIS CODE AIMS TO SEARCH EXHAUSTIVELY TO SELECT THE BEST PERFORMING FEATURES, BASED ON THE LINEAR DISCRIMINANT ANALYSIS (LDA) CLASSIFIER ACCURACY.
 # ** - THE ORIGINAL DATASET (MATERIAL STACKING FAULT ENERGY) CAN BE ACCESSED HERE: https://braganeto.engr.tamu.edu/book-website/
-# ** 
-###############################################################################
-
+# *****************************************************************************
 
 # *******************************  LIBRARIES  *********************************
 import pandas as pd
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 ###############################################################################
-
 
 ###############################################################################
 # *********************************  CODE BODY ********************************  
