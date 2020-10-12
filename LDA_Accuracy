@@ -1,0 +1,77 @@
+import pandas as pd
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
+
+
+#Load the original dataset. The dataset can be accessed here: https://braganeto.engr.tamu.edu/book-website/
+Data_Points  = pd.read_table("Stacking_Fault_Energy_Dataset.txt")
+
+#Pick the first 80% of the sample points to be the training data and the remaining 20% to be the test data.
+Split_Point = int(0.8*len(Data_Points))
+Train_Sample = Data_Points[:Split_Point] 
+Test_Sample = Data_Points[Split_Point:]
+#Two classes are defined: Class 0 contains the data with Stacking_Fault_Energy (SFE) > 40 and class 1 includes the data resulting SFE < 40.
+train_X = Train_Sample.iloc[:,:-1].values 
+Train_Y = Train_Sample.iloc[:,-1]>40 
+Test_X = Test_Sample.iloc[:,:-1].values 
+Test_Y = Test_Sample.iloc[:,-1]>40 
+
+#Create the combinations of feature sets. 
+def GenerateCombinations(Initial_List,Feature_Numbers): #'Initial_List' is the list of all available features. 'Feature_Numbers' is the number of features in a combination.
+    Final_List = []
+    if Feature_Numbers == 1:
+        for i in range (len(Initial_List)):
+            Final_List.append([Initial_List[i]])
+        return Final_List
+
+    while len(Initial_List):
+        Temp = Initial_List.pop(0)
+        Initial_List_Copy = Initial_List.copy()
+        List_Local=GenerateCombinations(Initial_List_Copy,Feature_Numbers-1)
+        Feature_Numbers_New=len(List_Local)
+        for i in range(Feature_Numbers_New):
+            List_Local[i].insert(0,Temp)
+        Final_List +=List_Local
+    return Final_List
+
+#Select the final combination with the best performance in each subset (1_feature subsets to 5_feature subsets).
+#The performance is evaluated based on the accuracy of the Linear Discriminant Analysis (LDA) classifier. 
+Feature_Names = ["C","N","Ni","Fe","Mn","Si","Cr"]
+Index = [0,1,2,3,4,5,6]
+nTotal = 6
+Accuracy_List = list()
+Global_Opt = []
+for nFeature in range(1,nTotal):
+    Combin_List = GenerateCombinations(Index.copy(), 1)
+    Max_Accu = -np.inf
+    Test_Accu = 0
+    Name_Opt_Combin = []
+    for Combin in Combin_List:
+        
+        #train_sample
+        Combin_Name = Global_Opt + [Feature_Names[i] for i in Combin]
+        Train_X = Train_Sample[Combin_Name]
+        Test_X = Test_Sample[Combin_Name]       
+       
+        #function to accuracy
+        My_LDA=LDA()
+        My_LDA.fit(Train_X, Train_Y.astype(int))
+        Predict_Train_Y = My_LDA.predict(Train_X)
+        Predict_Test_Y = My_LDA.predict(Test_X)
+        Accu_Train = metrics.accuracy_score(Train_Y,Predict_Train_Y)
+        Accu_Test = metrics.accuracy_score(Test_Y,Predict_Test_Y)
+
+        if Accu_Train>Max_Accu:
+            Max_Accu = Accu_Train
+            Test_Accu = Accu_Test
+            Opt_Combin = Combin
+            Name_Opt_Combin = Combin_Name
+        elif Accu_Train == Max_Accu and sum(Opt_Combin)>sum(Combin):
+            Opt_Combin=Combin
+            Name_Opt_Combin=Combin_Name
+           
+    Accuracy_List.append([nFeature,Max_Accu,Test_Accu, Name_Opt_Combin])
+    Opt_Index=Index.index(Opt_Combin[0])
+    Global_Opt.append(Feature_Names[Index.pop(Opt_Index)])
+    print(Global_Opt)
+    
+print(Accuracy_List)    
