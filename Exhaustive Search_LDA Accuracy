@@ -1,7 +1,22 @@
+# *****************************************************************************
+# ** DATE: 10/11/2020
+# ** BY: FATEMEH SHAHSAVARI
+# ** TITLE: EXHAUSTIVE FEATURE SELECTION (EFS)
+# ** DESCRIPTION: 
+# ** - THIS CODE AIMS TO SEARCH EXHAUSTIVELY TO SELECT THE BEST PERFORMING FEATURES, BASED ON THE LINEAR DISCRIMINANT ANALYSIS (LDA) CLASSIFIER ACCURACY.
+# ** - THE ORIGINAL DATASET (MATERIAL STACKING FAULT ENERGY) CAN BE ACCESSED HERE: https://braganeto.engr.tamu.edu/book-website/
+# ** 
+###############################################################################
+
+
+# *******************************  LIBRARIES  *********************************
 import pandas as pd
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
+###############################################################################
 
 
+###############################################################################
+# *********************************  CODE BODY ********************************  
 #Load the original dataset. The dataset can be accessed here: https://braganeto.engr.tamu.edu/book-website/
 Data_Points  = pd.read_table("Stacking_Fault_Energy_Dataset.txt")
 
