@@ -71,12 +71,12 @@ nTotal=6
 accList=[]
 
 for nFeature in range(1,nTotal):
-    combinList=GenerateCombination(index.copy(), nFeature)
+    combinList=GenerateCombinations(index.copy(), nFeature)
     maxAccu=-np.inf
     testAccu=0
     nameOpt_Combin=[]
     
-    for Combin in CombinList:
+    for combin in combinList:
         #train_sample
         combinName=[featureNames[i] for i in combin]
         train_X=trainSample[combinName]
@@ -88,13 +88,12 @@ for nFeature in range(1,nTotal):
         predictTest_Y=myLDA.predict(test_X)
         accu=metrics.accuracy_score(train_Y,predictTrain_Y)
         accuTest=metrics.accuracy_score(test_Y,predictTest_Y)
-        #print(combinName, accu)
         if accu>maxAccu:
             maxAccu=accu
             testAccu=accuTest
             optCombin=combin
             nameOpt_combin=combinName
-        elif accu==maxAccu and sum(optCombin)<sum(combin):
+        elif accu==maxAccu and sum(optCombin)>sum(combin):
             optCombin=combin
             nameOpt_Combin=combinName
            
