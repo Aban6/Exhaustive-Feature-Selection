@@ -86,15 +86,15 @@ for nFeature in range(1,nTotal):
         myLDA.fit(train_X, train_Y.astype(int))
         predictTrain_Y=myLDA.predict(train_X)
         predictTest_Y=myLDA.predict(test_X)
-        accu=1-(metrics.accuracy_score(train_Y,predictTrain_Y))
-        accuTest=1-(metrics.accuracy_score(test_Y,predictTest_Y))
+        accu=metrics.accuracy_score(train_Y,predictTrain_Y)
+        accuTest=metrics.accuracy_score(test_Y,predictTest_Y)
         #print(combinName, accu)
-        if accu<maxAccu:
+        if accu>maxAccu:
             maxAccu=accu
             testAccu=accuTest
             optCombin=combin
             nameOpt_combin=combinName
-        elif accu==maxAccu and sum(optCombin)>sum(combin):
+        elif accu==maxAccu and sum(optCombin)<sum(combin):
             optCombin=combin
             nameOpt_Combin=combinName
            
