@@ -81,7 +81,7 @@ for nFeature in range(1,nTotal):
         combinName=[featureNames[i] for i in combin]
         train_X=trainSample[combinName]
         test_X=testSample[combinName]        
-        #function to err
+        #function to calculate accuracy
         myLDA=LDA()
         myLDA.fit(train_X, train_Y.astype(int))
         predictTrain_Y=myLDA.predict(train_X)
