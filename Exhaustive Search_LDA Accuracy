@@ -8,8 +8,12 @@
 # *****************************************************************************
 
 # *******************************  LIBRARIES  *********************************
+import numpy as np
 import pandas as pd
+import seaborn as sns
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
+from sklearn import metrics
+
 ###############################################################################
 
 ###############################################################################
@@ -92,7 +96,7 @@ for nFeature in range(1,nTotal):
             maxAccu=accu
             testAccu=accuTest
             optCombin=combin
-            nameOpt_combin=combinName
+            nameOpt_Combin=combinName
         elif accu==maxAccu and sum(optCombin)>sum(combin):
             optCombin=combin
             nameOpt_Combin=combinName
